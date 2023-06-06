@@ -1,24 +1,16 @@
-# README
+# Appi avec Rails
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/rockethelll/API_Rails)
 
-Things you may want to cover:
+## Fonctionnement
 
-* Ruby version
+* Lance `bundle install`
+* Et enfin `rails db:migrate` pour mettre tes bases de données UP
 
-* System dependencies
+Un fichier contenant des générateurs de contenu aléatoire est à disposition pour effectuer des tests.
+Pour t'en servir et remplir tes bases, lance cette dernière commande `rails db:seed`.
 
-* Configuration
+## Accès au site
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Pour accéder au site, lance la commande `rails s` qui va lancer un serveur.
+Va sur [le site](http://localhost:3000) via ce lien une fois que tu as exécuté toutes ces commandes.

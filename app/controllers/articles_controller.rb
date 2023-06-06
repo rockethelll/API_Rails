@@ -1,19 +1,18 @@
-class ArticlesController < ApplicationController
-  before_action :set_article, only: %i[ show update destroy ]
+# frozen_string_literal: true
 
-  # GET /articles
+class ArticlesController < ApplicationController
+  before_action :authenticate_user!, :set_article, only: %i[new create show update destroy]
+
   def index
     @articles = Article.all
 
     render json: @articles
   end
 
-  # GET /articles/1
   def show
     render json: @article
   end
 
-  # POST /articles
   def create
     @article = Article.new(article_params)
 
@@ -24,28 +23,33 @@ class ArticlesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /articles/1
   def update
-    if @article.update(article_params)
-      render json: @article
+    if @article.user == current_user
+      if @article.update(article_params)
+        render json: @article
+      else
+        render json: @article.errors, status: :unprocessable_entity
+      end
     else
-      render json: @article.errors, status: :unprocessable_entity
+      render json: { message: "Modification interdite. Ce n'est pas votre article !" }, status: :unauthorized
     end
   end
 
-  # DELETE /articles/1
   def destroy
-    @article.destroy
+    if @article.user == current_user
+      @article.destroy
+    else
+      render json: { message: "Suppression interdite.Ce n'est pas votre article !" }, status: :unauthorized
+    end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_article
-      @article = Article.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def article_params
-      params.require(:article).permit(:title, :content)
-    end
+  def set_article
+    @article = Article.find(params[:id])
+  end
+
+  def article_params
+    params.require(:article).permit(:title, :content, :user_id)
+  end
 end
